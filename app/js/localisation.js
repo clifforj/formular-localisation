@@ -9,13 +9,20 @@ angular.module('formularLocalisation', [ ])
         ]
     })
     .service("formularLocalisationService",
-    ["$log", "$injector", "formularLocalisationDefaults",
-        function ($log, $injector, formularLocalisationDefaults) {
+    ["$filter","$log", "$injector", "formularLocalisationDefaults",
+        function ($filter, $log, $injector, formularLocalisationDefaults) {
             var config, locale;
 
             this.setLocale = function (locale) {
-                this.locale = locale;
+                if(this.isLocaleAvailable(locale))
+                    this.locale = locale;
+                else
+                    this.locale = this.config.locales[0].locale;
             };
+
+            this.isLocaleAvailable = function (locale) {
+                return $filter('filter')(this.config.locales, {locale:locale}) === 1;
+            }
 
             // Check for a user specified config, otherwise use the defaults
             this.initConfig = function () {

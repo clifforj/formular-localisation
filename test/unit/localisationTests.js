@@ -17,6 +17,11 @@ describe('formularLocalisation service', function () {
             expect(formularLocalisationService.locale).toEqual('en-gb');
         }));
 
+        it('should reset to default locale if an invalid/unavailable one is request', inject(function (formularLocalisationService) {
+            formularLocalisationService.setLocale("invalid");
+            expect(formularLocalisationService.locale).toEqual('en-gb');
+        }));
+
         describe('User Specified', function () {
             beforeEach(module('formularLocalisation', function ($provide) {
                 $provide.value('formularLocalisationConfig', {
