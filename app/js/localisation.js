@@ -7,7 +7,8 @@ angular.module('formularLocalisation', [ ])
                 locale: "en-gb",
                 url: "localisation/en-gb.json"
             }
-        ]
+        ],
+        debug: true
     })
     .service("formularLocalisationService",
     ["$rootScope", "$http", "$filter", "$log", "$injector", "formularLocalisationDefaults",
@@ -18,24 +19,25 @@ angular.module('formularLocalisation', [ ])
             this.getLocalisedString = function (key) {
                 var result = "";
 
-                if(this.resourceAvailable) {
-                    var matches = $filter('filter')(this.resources[this.locale], {key:key});
+                if(this.resourceAvailable && this.resources[this.locale] != undefined) {
+                    var matches = $filter('filter')(this.resources[this.locale] || [], {key:key});
 
                     if (matches.length > 1) {
-                        $log.log("formular: More than one resource value found with key " + key + " using the first");
+                        this.log("More than one resource value found with key " + key + " using the first");
                     }
                     if(matches.length > 0) {
                         result = matches[0].value;
                     } else {
-                        $log.log("formular: No resource value found with key " + key);
+                        this.log("No resource value found with key " + key);
                         result = key;
                     }
-                } else {
+                } else if(!this.resourceAvailable) {
                     this.loadCurrentLocalisationResource();
+                    this.resourceAvailable = true;
                 }
 
                 if(this.getLocaleConfig(this.locale).failure) {
-                    $log.log("formular: Failed to load this resource earlier, no values can be provided : " + key);
+                    this.log("Failed to load this resource earlier, no values can be provided : " + key);
                     result = key;
                 }
 
@@ -58,10 +60,10 @@ angular.module('formularLocalisation', [ ])
             this.initConfig = function () {
                 if ($injector.has("formularLocalisationConfig")) {
                     this.config = $injector.get("formularLocalisationConfig");
-                    $log.log("formular: Locale config has been found");
+                    this.log("Locale config has been found");
                 } else {
                     this.config = formularLocalisationDefaults;
-                    $log.log("formular: No locale config found, using defaults");
+                    this.log("No locale config found, using defaults");
                 }
 
                 this.setLocale(this.config.locales[0].locale);
@@ -72,7 +74,7 @@ angular.module('formularLocalisation', [ ])
                     $http({ method:"GET", url:this.getLocaleConfig(this.locale).url, cache:false })
                         .success(angular.bind(this, this.setCurrentLocalisationResource))
                         .error(angular.bind(this, function () {
-                            $log.log("formular: Failed to load resouce : " + this.getLocaleConfig(this.locale).url);
+                            this.log("Failed to load resouce : " + this.getLocaleConfig(this.locale).url);
                             this.getLocaleConfig(this.locale).failure = true;
                         }));
                 }
@@ -93,6 +95,11 @@ angular.module('formularLocalisation', [ ])
                     this.locale = this.config.locales[0].locale;
                 }
                 this.resourceAvailable = this.isResourceAvailable(this.locale);
+            };
+
+            this.log = function (message) {
+                if (this.config.debug)
+                    $log.log("formular: " + message);
             };
 
             this.initConfig();
