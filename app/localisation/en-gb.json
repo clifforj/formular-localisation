@@ -1,0 +1,10 @@
+[
+    {
+        "key": "application.title",
+        "value": "Localisation Example"
+    },
+    {
+        "key": "application.description",
+        "value": "Just showing how the keys get picked up by the filter"
+    }
+]

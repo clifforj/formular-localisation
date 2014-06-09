@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="localisationExample">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="libs/angular/angular.js"></script>
+    <script src="js/localisation.js"></script>
+    <script type="text/javascript">
+        angular.module("localisationExample", [ 'formularLocalisation' ])
+                .value("formularLocalisationConfig", {
+                    locales: [
+                        {
+                            locale: "en-gb",
+                            url: "localisation/en-gb.json"
+                        },
+                        {
+                            locale: "en-1337",
+                            url: "localisation/en-1337.json"
+                        }
+                    ]
+                })
+                .controller("ExampleController", ["$rootScope", "formularLocalisationService", function ($rootScope, localeService) {
+                    this.localeService = localeService;
+
+                    this.switchLocale = function () {
+                        var newLocale = this.localeService.locale == "en-gb" ? "en-1337" : "en-gb";
+                        this.localeService.setLocale(newLocale);
+                    }
+                }]);
+    </script>
+</head>
+<body ng-controller="ExampleController as example">
+    <h1>{{ "application.title" | localise }}</h1>
+    <p>{{ "application.description" | localise }}</p>
+    <p>{{ "application.fail" | localise }}</p>
+
+    <a href ng-click="example.switchLocale()">Switch Locale</a>
+</body>
+</html>
