@@ -32,7 +32,7 @@
 <body ng-controller="ExampleController as example">
     <h1>{{ "application.title" | localise }}</h1>
     <p>{{ "application.description" | localise }}</p>
-    <p>{{ "application.fail" | localise }}</p>
+    <p>{{ "application.fail" | localise }} - {{ "application.debug" | localise }}</p>
 
     <a href ng-click="example.switchLocale()">Switch Locale</a>
 </body>

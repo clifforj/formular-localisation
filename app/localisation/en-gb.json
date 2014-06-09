@@ -6,5 +6,9 @@
     {
         "key": "application.description",
         "value": "Just showing how the keys get picked up by the filter"
+    },
+    {
+        "key": "application.debug",
+        "value": "If debug were set to true in the config, a log message would show for this key failing to load"
     }
 ]
