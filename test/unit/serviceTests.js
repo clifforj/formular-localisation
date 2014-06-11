@@ -1,6 +1,6 @@
 'use strict';
 
-describe('formularLocalisation service', function () {
+describe('Localisation service', function () {
     var flService, flDefaults, $httpBackend;
     var validJson = [
         {
@@ -37,13 +37,13 @@ describe('formularLocalisation service', function () {
                 url: "valid.json"
             }
         ]
-    }
+    };
 
     describe('Configuration', function () {
-        beforeEach(module('formularLocalisation'));
-        beforeEach(inject(function (formularLocalisationService, formularLocalisationDefaults) {
-            flService = formularLocalisationService;
-            flDefaults = formularLocalisationDefaults;
+        beforeEach(module('localisation'));
+        beforeEach(inject(function (localisationService, localisationDefaults) {
+            flService = localisationService;
+            flDefaults = localisationDefaults;
         }));
 
         it('will create a default config', function () {
@@ -65,22 +65,22 @@ describe('formularLocalisation service', function () {
     });
 
     describe('Configuration - User Specified', function () {
-        beforeEach(module('formularLocalisation', function ($provide) {
-            $provide.value('formularLocalisationConfig', angular.copy(customConfig));
+        beforeEach(module('localisation', function ($provide) {
+            $provide.value('localisationConfig', angular.copy(customConfig));
         }));
 
-        it('should pick up a user specified config if available', inject(function (formularLocalisationService) {
-            expect(formularLocalisationService.config).not.toBeNull();
-            expect(formularLocalisationService.locale).toEqual('en-valid');
+        it('should pick up a user specified config if available', inject(function (localisationService) {
+            expect(localisationService.config).not.toBeNull();
+            expect(localisationService.locale).toEqual('en-valid');
         }));
     });
 
     describe('Resources', function () {
-        beforeEach(module('formularLocalisation', function ($provide) {
-            $provide.value('formularLocalisationConfig', angular.copy(customConfig));
+        beforeEach(module('localisation', function ($provide) {
+            $provide.value('localisationConfig', angular.copy(customConfig));
         }));
-        beforeEach(inject(function (_$httpBackend_, formularLocalisationService) {
-            flService = formularLocalisationService
+        beforeEach(inject(function (_$httpBackend_, localisationService) {
+            flService = localisationService
             $httpBackend = _$httpBackend_;
         }));
 
@@ -111,11 +111,11 @@ describe('formularLocalisation service', function () {
     });
 
     describe('Localised Strings', function () {
-        beforeEach(module('formularLocalisation', function ($provide) {
-            $provide.value('formularLocalisationConfig', customConfig);
+        beforeEach(module('localisation', function ($provide) {
+            $provide.value('localisationConfig', customConfig);
         }));
-        beforeEach(inject(function (_$httpBackend_, formularLocalisationService) {
-            flService = formularLocalisationService
+        beforeEach(inject(function (_$httpBackend_, localisationService) {
+            flService = localisationService
             $httpBackend = _$httpBackend_;
         }));
 

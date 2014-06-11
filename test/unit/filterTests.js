@@ -1,6 +1,6 @@
-describe('formularLocalisation filter', function () {
-    beforeEach(module('formularLocalisation', function($provide) {
-        $provide.service('formularLocalisationService', function() {
+describe('localisation filter', function () {
+    beforeEach(module('localisation', function($provide) {
+        $provide.service('localisationService', function() {
             this.getLocalisedString = function (key) {
                 if(key === "application.title") {
                     return "My Application";

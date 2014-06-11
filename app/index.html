@@ -17,7 +17,8 @@
                             locale: "en-1337",
                             url: "localisation/en-1337.json"
                         }
-                    ]
+                    ],
+                    debug: true
                 })
                 .controller("ExampleController", ["$rootScope", "formularLocalisationService", function ($rootScope, localeService) {
                     this.localeService = localeService;
